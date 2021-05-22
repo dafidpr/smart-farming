@@ -432,7 +432,6 @@ class _RegisterState extends State<Register> {
     var res = await Network().authData(data, '/register');
     var body = json.decode(res.body);
     print(body);
-    return;
     if (body['success']) {
       Navigator.push(
         context,
