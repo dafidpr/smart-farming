@@ -4,6 +4,7 @@ import 'package:smart_farming_app/api/api.dart';
 import 'package:smart_farming_app/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farming_app/pages/login.dart';
+import 'dart:async';
 
 class Register extends StatefulWidget {
   @override
@@ -13,11 +14,20 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  var email;
-  var password;
-  var fname;
-  var lname;
-  var phone;
+  DateTime date;
+  var name,
+      username,
+      password,
+      email,
+      phone,
+      gender,
+      birthplace,
+      birthday,
+      landArea,
+      address,
+      serialNumber,
+      farmerGroup;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -50,6 +60,76 @@ class _RegisterState extends State<Register> {
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
+                                    Icons.account_circle,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Nama Lengkap",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (nameValue) {
+                                  if (nameValue.isEmpty) {
+                                    return 'Masukan nama lengkap';
+                                  }
+                                  name = nameValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.supervisor_account,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Username",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (usernameValue) {
+                                  if (usernameValue.isEmpty) {
+                                    return 'Masukan username';
+                                  }
+                                  username = usernameValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.vpn_key,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Password",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (passwordValue) {
+                                  if (passwordValue.isEmpty) {
+                                    return 'Masukan password';
+                                  }
+                                  password = passwordValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
                                     Icons.email,
                                     color: Colors.grey,
                                   ),
@@ -73,43 +153,43 @@ class _RegisterState extends State<Register> {
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.insert_emoticon,
+                                    Icons.map_sharp,
                                     color: Colors.grey,
                                   ),
-                                  hintText: "First Name",
+                                  hintText: "Tempat Lahir",
                                   hintStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                validator: (firstname) {
-                                  if (firstname.isEmpty) {
-                                    return 'Please enter your first name';
+                                validator: (birthplaceValue) {
+                                  if (birthplaceValue.isEmpty) {
+                                    return 'Masukan tempat lahir';
                                   }
-                                  fname = firstname;
+                                  birthplace = birthplaceValue;
                                   return null;
                                 },
                               ),
                               TextFormField(
                                 style: TextStyle(color: Color(0xFF000000)),
                                 cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.datetime,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.insert_emoticon,
+                                    Icons.calendar_today,
                                     color: Colors.grey,
                                   ),
-                                  hintText: "Last Name",
+                                  hintText: "Tanggal Lahir",
                                   hintStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                validator: (lastname) {
-                                  if (lastname.isEmpty) {
-                                    return 'Please enter your last name';
+                                validator: (birthdayValue) {
+                                  if (birthdayValue.isEmpty) {
+                                    return 'Masukan tanggal lahir';
                                   }
-                                  lname = lastname;
+                                  birthday = birthdayValue;
                                   return null;
                                 },
                               ),
@@ -122,17 +202,17 @@ class _RegisterState extends State<Register> {
                                     Icons.phone,
                                     color: Colors.grey,
                                   ),
-                                  hintText: "Phone",
+                                  hintText: "Telepon",
                                   hintStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                validator: (phonenumber) {
-                                  if (phonenumber.isEmpty) {
-                                    return 'Please enter phone number';
+                                validator: (phoneValue) {
+                                  if (phoneValue.isEmpty) {
+                                    return 'Masukan nomor telepon';
                                   }
-                                  phone = phonenumber;
+                                  phone = phoneValue;
                                   return null;
                                 },
                               ),
@@ -140,23 +220,114 @@ class _RegisterState extends State<Register> {
                                 style: TextStyle(color: Color(0xFF000000)),
                                 cursorColor: Color(0xFF9b9b9b),
                                 keyboardType: TextInputType.text,
-                                obscureText: true,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.vpn_key,
+                                    Icons.accessibility,
                                     color: Colors.grey,
                                   ),
-                                  hintText: "Password",
+                                  hintText: "Jenis Kelamin",
                                   hintStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                validator: (passwordValue) {
-                                  if (passwordValue.isEmpty) {
-                                    return 'Please enter some text';
+                                validator: (genderValue) {
+                                  if (genderValue.isEmpty) {
+                                    return 'Masukan jenis kelamin';
                                   }
-                                  password = passwordValue;
+                                  gender = genderValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.image,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Luas Lahan",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (landAreaValue) {
+                                  if (landAreaValue.isEmpty) {
+                                    return 'Masukan luas lahan';
+                                  }
+                                  landArea = landAreaValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.format_list_numbered,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Serial Number",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (serialNumberValue) {
+                                  if (serialNumberValue.isEmpty) {
+                                    return 'Masukan serial number';
+                                  }
+                                  serialNumber = serialNumberValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.group_sharp,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Kelompok Tani",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (farmerGroupValue) {
+                                  if (farmerGroupValue.isEmpty) {
+                                    return 'Masukan kelompok tani';
+                                  }
+                                  farmerGroup = farmerGroupValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.map_sharp,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Alamat",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (addressValue) {
+                                  if (addressValue.isEmpty) {
+                                    return 'Masukan alamat';
+                                  }
+                                  address = addressValue;
                                   return null;
                                 },
                               ),
@@ -231,22 +402,26 @@ class _RegisterState extends State<Register> {
       _isLoading = true;
     });
     var data = {
-      'email': email,
+      'name': name,
+      'username': username,
       'password': password,
+      'email': email,
       'phone': phone,
-      'fname': fname,
-      'lname': lname
+      'birthplace': birthplace,
+      'birthday': birthday,
+      'gender': gender,
+      'land_area': landArea,
+      'address': address,
+      'serial_number': serialNumber,
+      'farmer_group_id': farmerGroup
     };
 
     var res = await Network().authData(data, '/register');
     var body = json.decode(res.body);
     if (body['success']) {
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', json.encode(body['token']));
-      localStorage.setString('user', json.encode(body['user']));
       Navigator.push(
         context,
-        new MaterialPageRoute(builder: (context) => Home()),
+        new MaterialPageRoute(builder: (context) => Login()),
       );
     }
 

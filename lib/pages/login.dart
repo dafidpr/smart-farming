@@ -13,7 +13,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  var email;
+  var username;
   var password;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   _showMsg(msg) {
@@ -63,20 +63,20 @@ class _LoginState extends State<Login> {
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.email,
+                                    Icons.verified_user_sharp,
                                     color: Colors.grey,
                                   ),
-                                  hintText: "Email",
+                                  hintText: "Username",
                                   hintStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                validator: (emailValue) {
-                                  if (emailValue.isEmpty) {
-                                    return 'Please enter email';
+                                validator: (usernameValue) {
+                                  if (usernameValue.isEmpty) {
+                                    return 'Please enter username';
                                   }
-                                  email = emailValue;
+                                  username = usernameValue;
                                   return null;
                                 },
                               ),
@@ -172,14 +172,14 @@ class _LoginState extends State<Login> {
     setState(() {
       _isLoading = true;
     });
-    var data = {'email': email, 'password': password};
+    var data = {'username': username, 'password': password};
 
     var res = await Network().authData(data, '/login');
     var body = json.decode(res.body);
     if (body['success']) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', json.encode(body['token']));
-      localStorage.setString('user', json.encode(body['user']));
+      localStorage.setString('token', json.encode(body['_token']));
+      localStorage.setString('user', json.encode(body['data']));
       Navigator.push(
         context,
         new MaterialPageRoute(builder: (context) => Home()),
