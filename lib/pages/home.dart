@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
 
     if (user != null) {
       setState(() {
-        name = user['fname'];
+        name = user['name'];
       });
     }
   }
@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
   }
 
   void logout() async {
-    var res = await Network().getData('/logout', false);
+    var res = await Network().getData('/logout');
     var body = json.decode(res.body);
 
     if (body['success']) {

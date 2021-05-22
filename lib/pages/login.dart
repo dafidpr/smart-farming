@@ -185,7 +185,7 @@ class _LoginState extends State<Login> {
         new MaterialPageRoute(builder: (context) => Home()),
       );
     } else {
-      _showMsg(body['message']);
+      _showMsg(body['messages']);
     }
 
     setState(() {

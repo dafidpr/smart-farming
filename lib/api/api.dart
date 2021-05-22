@@ -21,11 +21,10 @@ class Network {
     return test;
   }
 
-  getData(apiUrl, _token) async {
+  getData(apiUrl) async {
     var fullUrl = _url + apiUrl;
-    if (token == true) {
-      await _getToken();
-    }
+    await _getToken();
+
     return await http.get(fullUrl, headers: _setHeaders());
   }
 

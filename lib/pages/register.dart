@@ -27,6 +27,19 @@ class _RegisterState extends State<Register> {
       address,
       serialNumber,
       farmerGroup;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  _showMsg(msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -418,11 +431,15 @@ class _RegisterState extends State<Register> {
 
     var res = await Network().authData(data, '/register');
     var body = json.decode(res.body);
+    print(body);
+    return;
     if (body['success']) {
       Navigator.push(
         context,
         new MaterialPageRoute(builder: (context) => Login()),
       );
+    } else {
+      _showMsg(body['messages']);
     }
 
     setState(() {
