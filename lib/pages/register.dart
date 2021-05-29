@@ -15,19 +15,6 @@ class _RegisterState extends State<Register> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
   var name, username, password, email, phone, landArea, serialNumber;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  _showMsg(msg) {
-    final snackBar = SnackBar(
-      content: Text(msg),
-      action: SnackBarAction(
-        label: 'Close',
-        onPressed: () {
-          // Some code to undo the change!
-        },
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
 
   int _farmerGroup;
 
@@ -38,7 +25,7 @@ class _RegisterState extends State<Register> {
         {"id": 0, "name": "Pilih Kelompok Petani"}
       ];
     });
-    final respose = await Network().getDataNoToken("/farmer-groups");
+    final respose = await Network().getDataWithoutToken("/farmer-groups");
     var listData = jsonDecode(respose.body);
     setState(() {
       _dataFarmerGroups = listData[0];
@@ -239,7 +226,6 @@ class _RegisterState extends State<Register> {
                                   return null;
                                 },
                               ),
-
                               Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -263,47 +249,6 @@ class _RegisterState extends State<Register> {
                                   },
                                 ),
                               ),
-                              // Container(
-                              //   decoration: BoxDecoration(
-                              //     color: Colors.white,
-                              //     boxShadow: [
-                              //       BoxShadow(
-                              //         color: Colors.grey,
-                              //         blurRadius: 20.0,
-                              //         spreadRadius: 0.5,
-                              //         offset: Offset(1.0, 1.0),
-                              //       ),
-                              //     ],
-                              //   ),
-                              //   padding: EdgeInsets.only(left: 44.0),
-                              //   margin: EdgeInsets.only(
-                              //       top: 64.0, left: 16.0, right: 16.0),
-                              //   child: DropdownButton(
-                              //     isExpanded: true,
-                              //     items: your_list.map(
-                              //       (val) {
-                              //         return DropdownMenuItem(
-                              //           value: val,
-                              //           child: Text(val),
-                              //         );
-                              //       },
-                              //     ).toList(),
-                              //     value: _currentSelectedItem,
-                              //     onChanged: (value) {
-                              //       setState(() {
-                              //         _currentSelectedItem = value;
-                              //       });
-                              //     },
-                              //   ),
-                              // ),
-                              // Container(
-                              //   // margin: EdgeInsets.only(top: 0.0, left: 0.0),
-                              //   child: Icon(
-                              //     Icons.person,
-                              //     color: Colors.grey,
-                              //     size: 20.0,
-                              //   ),
-                              // ),
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: FlatButton(
@@ -393,10 +338,7 @@ class _RegisterState extends State<Register> {
         context,
         new MaterialPageRoute(builder: (context) => Login()),
       );
-    } else {
-      _showMsg(body['messages']);
     }
-
     setState(() {
       _isLoading = false;
     });

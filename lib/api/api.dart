@@ -15,10 +15,17 @@ class Network {
   authData(data, apiUrl) async {
     var fullUrl = _url + apiUrl;
 
-    var test = await http.post(Uri.parse(fullUrl),
+    var postData = await http.post(Uri.parse(fullUrl),
         body: jsonEncode(data), headers: _setHeaders());
-    print(test);
-    return test;
+    return postData;
+  }
+
+  sendPostData(data, apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    await _getToken();
+    var postData = await http.post(Uri.parse(fullUrl),
+        body: jsonEncode(data), headers: _setHeaders());
+    return postData;
   }
 
   getData(apiUrl) async {
@@ -28,15 +35,17 @@ class Network {
     return await http.get(fullUrl, headers: _setHeaders());
   }
 
-  getDataNoToken(apiURL) async {
+  getDataWithoutToken(apiURL) async {
     var fullUrl = _url + apiURL;
-
-    return await http.get(fullUrl, headers: _setHeaders());
+    return await http.get(fullUrl, headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json'
+    });
   }
 
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',
-        // 'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer $token'
       };
 }

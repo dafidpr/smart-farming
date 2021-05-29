@@ -10,7 +10,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String name;
+  String name, serialNumber;
+  var statusCondition;
+
   @override
   void initState() {
     _loadUserData();
@@ -24,6 +26,7 @@ class _HomeState extends State<Home> {
     if (user != null) {
       setState(() {
         name = user['name'];
+        serialNumber = user['serial_number'];
       });
     }
   }
@@ -41,7 +44,7 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Hi, $name',
+              'Hi, $name' + ' - my serial number : $serialNumber',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Center(
@@ -54,6 +57,18 @@ class _HomeState extends State<Home> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Text('Logout'),
+              ),
+            ),
+            Center(
+              child: RaisedButton(
+                elevation: 10,
+                onPressed: () {
+                  onOffLamp();
+                },
+                color: Colors.teal,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Text('$statusCondition'),
               ),
             ),
           ],
@@ -71,6 +86,25 @@ class _HomeState extends State<Home> {
       localStorage.remove('user');
       localStorage.remove('token');
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    }
+  }
+
+  void onOffLamp() async {
+    var data = {
+      'serial_number': serialNumber,
+    };
+
+    var res = await Network().sendPostData(data, '/lamp-status-update');
+    var body = json.decode(res.body);
+    print(body);
+    if (body['success']) {
+      setState(() {
+        if (body['condition'] == 1) {
+          statusCondition = 'Off';
+        } else {
+          statusCondition = 'On';
+        }
+      });
     }
   }
 }
