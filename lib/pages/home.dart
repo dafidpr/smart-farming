@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Test App'),
+        title: Text('Smart Farming App'),
         backgroundColor: Colors.teal,
       ),
       body: Padding(

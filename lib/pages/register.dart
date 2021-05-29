@@ -14,19 +14,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  DateTime date;
-  var name,
-      username,
-      password,
-      email,
-      phone,
-      gender,
-      birthplace,
-      birthday,
-      landArea,
-      address,
-      serialNumber,
-      farmerGroup;
+  var name, username, password, email, phone, landArea, serialNumber;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   _showMsg(msg) {
     final snackBar = SnackBar(
@@ -39,6 +27,28 @@ class _RegisterState extends State<Register> {
       ),
     );
     _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  int _farmerGroup;
+
+  List _dataFarmerGroups;
+  void getFarmerGroups() async {
+    setState(() {
+      _dataFarmerGroups = [
+        {"id": 0, "name": "Pilih Kelompok Petani"}
+      ];
+    });
+    final respose = await Network().getDataNoToken("/farmer-groups");
+    var listData = jsonDecode(respose.body);
+    setState(() {
+      _dataFarmerGroups = listData[0];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getFarmerGroups();
   }
 
   @override
@@ -166,52 +176,6 @@ class _RegisterState extends State<Register> {
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.map_sharp,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Tempat Lahir",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                validator: (birthplaceValue) {
-                                  if (birthplaceValue.isEmpty) {
-                                    return 'Masukan tempat lahir';
-                                  }
-                                  birthplace = birthplaceValue;
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.datetime,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.calendar_today,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Tanggal Lahir",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                validator: (birthdayValue) {
-                                  if (birthdayValue.isEmpty) {
-                                    return 'Masukan tanggal lahir';
-                                  }
-                                  birthday = birthdayValue;
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
                                     Icons.phone,
                                     color: Colors.grey,
                                   ),
@@ -226,29 +190,6 @@ class _RegisterState extends State<Register> {
                                     return 'Masukan nomor telepon';
                                   }
                                   phone = phoneValue;
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.accessibility,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Jenis Kelamin",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                validator: (genderValue) {
-                                  if (genderValue.isEmpty) {
-                                    return 'Masukan jenis kelamin';
-                                  }
-                                  gender = genderValue;
                                   return null;
                                 },
                               ),
@@ -298,52 +239,71 @@ class _RegisterState extends State<Register> {
                                   return null;
                                 },
                               ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.group_sharp,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Kelompok Tani",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
+
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
                                 ),
-                                validator: (farmerGroupValue) {
-                                  if (farmerGroupValue.isEmpty) {
-                                    return 'Masukan kelompok tani';
-                                  }
-                                  farmerGroup = farmerGroupValue;
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.map_sharp,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Alamat",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
+                                padding: EdgeInsets.only(left: 0.0),
+                                margin: EdgeInsets.only(top: 4.0, right: 0.0),
+                                child: DropdownButton(
+                                  hint: Text("Pilih Kelompok Petani"),
+                                  isExpanded: true,
+                                  value: _farmerGroup,
+                                  items: _dataFarmerGroups.map((item) {
+                                    return DropdownMenuItem(
+                                      child: Text(item['name']),
+                                      value: item['id'],
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _farmerGroup = value;
+                                    });
+                                  },
                                 ),
-                                validator: (addressValue) {
-                                  if (addressValue.isEmpty) {
-                                    return 'Masukan alamat';
-                                  }
-                                  address = addressValue;
-                                  return null;
-                                },
                               ),
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //     color: Colors.white,
+                              //     boxShadow: [
+                              //       BoxShadow(
+                              //         color: Colors.grey,
+                              //         blurRadius: 20.0,
+                              //         spreadRadius: 0.5,
+                              //         offset: Offset(1.0, 1.0),
+                              //       ),
+                              //     ],
+                              //   ),
+                              //   padding: EdgeInsets.only(left: 44.0),
+                              //   margin: EdgeInsets.only(
+                              //       top: 64.0, left: 16.0, right: 16.0),
+                              //   child: DropdownButton(
+                              //     isExpanded: true,
+                              //     items: your_list.map(
+                              //       (val) {
+                              //         return DropdownMenuItem(
+                              //           value: val,
+                              //           child: Text(val),
+                              //         );
+                              //       },
+                              //     ).toList(),
+                              //     value: _currentSelectedItem,
+                              //     onChanged: (value) {
+                              //       setState(() {
+                              //         _currentSelectedItem = value;
+                              //       });
+                              //     },
+                              //   ),
+                              // ),
+                              // Container(
+                              //   // margin: EdgeInsets.only(top: 0.0, left: 0.0),
+                              //   child: Icon(
+                              //     Icons.person,
+                              //     color: Colors.grey,
+                              //     size: 20.0,
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: FlatButton(
@@ -420,13 +380,9 @@ class _RegisterState extends State<Register> {
       'password': password,
       'email': email,
       'phone': phone,
-      'birthplace': birthplace,
-      'birthday': birthday,
-      'gender': gender,
       'land_area': landArea,
-      'address': address,
       'serial_number': serialNumber,
-      'farmer_group_id': farmerGroup
+      'farmer_group_id': _farmerGroup
     };
 
     var res = await Network().authData(data, '/register');

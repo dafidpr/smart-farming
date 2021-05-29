@@ -28,9 +28,15 @@ class Network {
     return await http.get(fullUrl, headers: _setHeaders());
   }
 
+  getDataNoToken(apiURL) async {
+    var fullUrl = _url + apiURL;
+
+    return await http.get(fullUrl, headers: _setHeaders());
+  }
+
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
+        // 'Authorization': 'Bearer $token'
       };
 }
