@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:smart_farming_app/api/api.dart';
-import 'package:smart_farming_app/pages/home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:smart_farming_app/pages/home.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_farming_app/pages/login.dart';
-import 'dart:async';
+//import 'dart:async';
 
 class Register extends StatefulWidget {
   @override

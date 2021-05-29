@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:smart_farming_app/api/api.dart';
 import 'package:smart_farming_app/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_farming_app/pages/register.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_farming_app/pages/register_widget.dart';
+import 'package:smart_farming_app/pages/theme.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -23,7 +25,6 @@ class _LoginState extends State<Login> {
         label: 'Close',
         onPressed: () {
           // Some code to undo the change!
-          // kome
         },
       ),
     );
@@ -32,129 +33,189 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
-      key: _scaffoldKey,
-      body: Container(
-        color: Colors.teal,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+        key: _scaffoldKey,
+        body: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(3, 40, 140, 50),
+                child: Text(
+                  'Selamat datang,\nSmart Farming App!',
+                  style: GoogleFonts.poppins(),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 50, 20, 0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Card(
-                      elevation: 4.0,
-                      color: Colors.white,
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.verified_user_sharp,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Username",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                validator: (usernameValue) {
-                                  if (usernameValue.isEmpty) {
-                                    return 'Please enter username';
-                                  }
-                                  username = usernameValue;
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.vpn_key,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                validator: (passwordValue) {
-                                  if (passwordValue.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  password = passwordValue;
-                                  return null;
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: FlatButton(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 8, bottom: 8, left: 10, right: 10),
-                                    child: Text(
-                                      _isLoading ? 'Proccessing...' : 'Login',
-                                      textDirection: TextDirection.ltr,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15.0,
-                                        decoration: TextDecoration.none,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ),
-                                  color: Colors.teal,
-                                  disabledColor: Colors.grey,
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(20.0)),
-                                  onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _login();
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text('Masukan username dan password',
+                              style: GoogleFonts.raleway(
+                                  color: Color(0xFF0D1724),
+                                  fontWeight: FontWeight.w500)),
+                        ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => Register()));
-                        },
-                        child: Text(
-                          'Create new Account',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.normal,
+                      padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                      key: _formKey,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: 330,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Color(0xFFE6E6E6),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                                child: TextFormField(
+                                    //controller: textController1,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Username',
+                                      labelStyle: blackTextFont2.copyWith(
+                                          color: Color(0xFF8B97A2),
+                                          fontWeight: FontWeight.w500),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (usernameValue) {
+                                      if (usernameValue.isEmpty) {
+                                        return 'Please enter username';
+                                      }
+                                      username = usernameValue;
+                                      return null;
+                                    },
+                                    style: GoogleFonts.raleway(
+                                        color: Color(0xFF8B97A2),
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: 330,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Color(0xFFE6E6E6),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                                child: TextFormField(
+                                    //controller: textController1,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Password',
+                                      labelStyle: blackTextFont2.copyWith(
+                                          color: Color(0xFF8B97A2),
+                                          fontWeight: FontWeight.w500),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (passwordValue) {
+                                      if (passwordValue.isEmpty) {
+                                        return 'Please enter some text';
+                                      }
+                                      password = passwordValue;
+                                      return null;
+                                    },
+                                    style: GoogleFonts.raleway(
+                                        color: Color(0xFF8B97A2),
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, -1),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(3, 10, 0, 2),
+                        child: InkWell(
+                          onTap: () {
+                            if (_formKey.currentState.validate()) {
+                              _login();
+                            }
+                          },
+                          child: Container(
+                            width: 80,
+                            height: 40,
+                            margin: EdgeInsets.all(25),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF099683),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text("Masuk",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500)),
+                            ),
                           ),
                         ),
                       ),
@@ -162,11 +223,24 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-            )
-          ],
-        ),
-      ),
-    );
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => RegisterWidget()));
+                  },
+                  // Padding(
+                  //   padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+                  child: Text('Buat akun baru', style: GoogleFonts.poppins()),
+                  //  )
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 
   void _login() async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smart_farming_app/pages/login.dart';
 import 'package:smart_farming_app/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_farming_app/pages/login.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Test App',
+      title: 'Smart Farming',
       debugShowCheckedModeBanner: false,
       home: CheckAuth(),
     );

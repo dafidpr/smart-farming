@@ -15,9 +15,5 @@ TextStyle blackTextFont4 = GoogleFonts.poppins();
 TextStyle blackTextFont5 =
     GoogleFonts.poppins().copyWith(color: Color(0xFFFFFFF));
 
-
-    TextStyle blackTextFont6 =
-    GoogleFonts.poppins().copyWith(color: Color(0xFFFFFFF));
-
-    TextStyle blackTextFont7 =
-    GoogleFonts.poppins().copyWith(color: Color(0xFF99683), fontWeight: FontWeight.w500);
+TextStyle blackTextFont6 = GoogleFonts.poppins()
+    .copyWith(color: Color(0xFF99683), fontWeight: FontWeight.w500);
