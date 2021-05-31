@@ -28,7 +28,7 @@ class _RegisterState extends State<Register> {
     final respose = await Network().getDataWithoutToken("/farmer-groups");
     var listData = jsonDecode(respose.body);
     setState(() {
-      _dataFarmerGroups = listData[0];
+      _dataFarmerGroups = listData['data'];
     });
   }
 
